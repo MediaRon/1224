@@ -3,6 +3,7 @@ import styled from "styled-components";
 const LogoStyles = styled.div`
 	width: 300px;
 	height: auto;
+	margin: 0 auto;
 `;
 
 const Logo = (props) => {
