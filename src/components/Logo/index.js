@@ -1,6 +1,14 @@
+import styled from "styled-components";
+
+const LogoStyles = styled.div`
+	width: 300px;
+	height: auto;
+`;
+
 const Logo = (props) => {
 	return (
-		<svg
+		<LogoStyles>
+			<svg
 			xmlns='http://www.w3.org/2000/svg'
 			viewBox='0 0 107.5 42.99'
 			{...props}
@@ -10,6 +18,7 @@ const Logo = (props) => {
 				fill='#fec5bb'
 			/>
 		</svg>
+		</LogoStyles>
 	);
 };
 
