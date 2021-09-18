@@ -1,8 +1,13 @@
+import Container from './objects/Container';
 import Header from './objects/Header';
 import './styles.scss';
 
 const Main = () => {
-	return <Header />;
+	return (
+		<Container>
+			<Header />
+		</Container>
+	);
 };
 
 export default Main;
