@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const LogoStyles = styled.div`
-	width: 300px;
 	height: auto;
 	margin: 0 auto;
+	padding-bottom: 1.5em;
+	text-align: center;
 `;
 
 const Logo = ( props ) => {
