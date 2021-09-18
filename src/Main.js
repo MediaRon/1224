@@ -1,11 +1,8 @@
-import Header from "./objects/Header"
-import './styles.scss'
+import Header from './objects/Header';
+import './styles.scss';
 
 const Main = () => {
-  return (
-    <Header />
-  );
+	return <Header />;
 };
-
 
 export default Main;
