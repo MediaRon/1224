@@ -42,5 +42,9 @@ Logo.propTypes = {
 	height: PropTypes.number.isRequired,
 	fill: PropTypes.string.isRequired,
 };
-
+Logo.defaultProps = {
+	width: 450,
+	height: 170,
+	fill: '#FFFDF4',
+};
 export default Logo;
