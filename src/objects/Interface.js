@@ -43,13 +43,18 @@ const StyledMaskedInput = styled.input`
 const StyledSubmitButton = styled.input`
 	display: block;
 	margin: 1.1em auto;
-	background: #3b2100;
+	background: #b77900;
 	font-size: 1.6em;
 	max-width: 280px;
 	color: #fff;
 	border: 1px solid #e1ecf0;
 	padding: 10px 20px;
 	border-radius: 5px;
+	transition: background-color 0.5s ease;
+
+	&:hover {
+		background: #956302;
+	}
 `;
 
 const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
