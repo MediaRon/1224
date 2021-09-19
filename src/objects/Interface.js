@@ -29,9 +29,15 @@ const TimeWrapper = styled.div`
 `;
 
 const StyledMaskedInput = styled.input`
-	display: inline-block;
+	display: block;
 	font-family: utile, sans-serif;
 	font-size: 2em;
+	text-align: center;
+	max-width: 280px;
+	margin: 1.1em auto;
+	background: #fffdf4;
+	color: #000;
+	border: 1px solid #9ebfb0;
 `;
 
 const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
