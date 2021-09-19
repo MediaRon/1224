@@ -40,6 +40,18 @@ const StyledMaskedInput = styled.input`
 	border: 1px solid #9ebfb0;
 `;
 
+const StyledSubmitButton = styled.input`
+	display: block;
+	margin: 1.1em auto;
+	background: #3b2100;
+	font-size: 1.6em;
+	max-width: 280px;
+	color: #fff;
+	border: 1px solid #e1ecf0;
+	padding: 10px 20px;
+	border-radius: 5px;
+`;
+
 const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
 	<StyledMaskedInput { ...props } ref={ inputRef } />
 ) );
@@ -136,8 +148,9 @@ const Interface = () => {
 						onAccept={ ( value, mask ) => {
 							handleTimeInputChange( value, mask );
 						} }
+						aria-label={ `Convert ${ currentTime } to 24-hour time.` }
 					/>
-					<input type="submit" value="Check Answer" />
+					<StyledSubmitButton type="submit" value="Check Answer" />
 				</form>
 			</InterfaceWrapper>
 		</>
