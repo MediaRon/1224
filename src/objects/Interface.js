@@ -4,7 +4,7 @@
  * The Game Interface Wrapper.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IMaskInput } from 'react-imask';
 //import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
@@ -17,6 +17,10 @@ const getRandomTime = () => {
 };
 
 const Interface = () => {
+	// Set ref to input component.
+	let maskedInputRef = useRef();
+
+	// Set state.
 	const [ index, setIndex ] = useState( null );
 	const [ currentTime, setCurrentTime ] = useState( null );
 	const [ currentTimeMatch, setCurrentTimeMatch ] = useState( null );
@@ -34,6 +38,9 @@ const Interface = () => {
 
 	useEffect( () => {
 		setTime();
+
+		// Set focus.
+		//maskedInputRef.current.focus();
 	}, [] );
 
 	/**
@@ -70,12 +77,21 @@ const Interface = () => {
 			<form>
 				{ currentTime }
 				<IMaskInput
+					type="text"
 					mask="00:00"
 					unmask={ true }
 					placeholderChar="_"
 					lazy={ false }
 					autoComplete="off"
 					value={ answer }
+					ref={ ( inputEl ) => {
+						if ( inputEl ) {
+							maskedInputRef = inputEl.element;
+							maskedInputRef.focus();
+							//maskedInputRef = inputEl;
+							//inputEl.current.focus();
+						}
+					} }
 					onAccept={ ( value, mask ) => {
 						handleTimeInputChange( value );
 					} }
