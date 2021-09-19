@@ -5,9 +5,38 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { IMaskInput } from 'react-imask';
-//import styled from 'styled-components';
+import { IMaskMixin } from 'react-imask';
+import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
+
+//Wrapper around the game interface.
+const InterfaceWrapper = styled.section`
+	background: rgba( 255, 255, 255, 0.95 );
+	padding: 15px 20px;
+	max-width: 800px;
+	margin: 0 auto;
+	margin-top: 1.5em;
+	border-radius: 10px;
+`;
+
+const TimeWrapper = styled.div`
+	font-family: utile, sans-serif;
+	font-size: 3em;
+	letter-spacing: 0.02em;
+	color: #b0c5e2;
+	line-height: 1.2em;
+	text-align: center;
+`;
+
+const StyledMaskedInput = styled.input`
+	display: inline-block;
+	font-family: utile, sans-serif;
+	font-size: 2em;
+`;
+
+const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
+	<StyledMaskedInput { ...props } ref={ inputRef } />
+) );
 
 const CEILING = 240;
 const FLOOR = 1;
@@ -74,35 +103,37 @@ const Interface = () => {
 
 	return (
 		<>
-			<form
-				onSubmit={ ( e ) => {
-					e.preventDefault();
-					maskedInputRef.select();
-				} }
-			>
-				{ currentTime }
-				<IMaskInput
-					type="text"
-					mask="00:00"
-					unmask={ true }
-					placeholderChar="_"
-					lazy={ false }
-					autoComplete="off"
-					value={ answer }
-					ref={ ( inputEl ) => {
-						if ( inputEl ) {
-							maskedInputRef = inputEl.element;
-							maskedInputRef.focus();
-							//maskedInputRef = inputEl;
-							//inputEl.current.focus();
-						}
+			<InterfaceWrapper>
+				<form
+					onSubmit={ ( e ) => {
+						e.preventDefault();
+						maskedInputRef.select();
 					} }
-					onAccept={ ( value, mask ) => {
-						handleTimeInputChange( value, mask );
-					} }
-				/>
-				<input type="submit" value="Check Answer" />
-			</form>
+				>
+					<TimeWrapper>{ currentTime }</TimeWrapper>
+					<MaskedStyledInput
+						type="text"
+						mask="00:00"
+						unmask={ true }
+						placeholderChar="_"
+						lazy={ false }
+						autoComplete="off"
+						value={ answer }
+						ref={ ( inputEl ) => {
+							if ( inputEl ) {
+								maskedInputRef = inputEl.element;
+								maskedInputRef.focus();
+								//maskedInputRef = inputEl;
+								//inputEl.current.focus();
+							}
+						} }
+						onAccept={ ( value, mask ) => {
+							handleTimeInputChange( value, mask );
+						} }
+					/>
+					<input type="submit" value="Check Answer" />
+				</form>
+			</InterfaceWrapper>
 		</>
 	);
 };

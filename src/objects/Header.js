@@ -5,8 +5,8 @@ const AppHeader = styled.header`
 	padding-top: 2em;
 `;
 const AppDescriptionWrapper = styled.div`
-	background: rgba( 0, 0, 0, 0.7 );
-	padding: 15px 20px;
+	background: rgba( 183, 121, 0, 0.9 );
+	padding: 5px 10px;
 	max-width: 800px;
 	margin: 0 auto;
 	border-radius: 10px;
