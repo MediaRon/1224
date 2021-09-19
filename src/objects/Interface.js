@@ -54,7 +54,7 @@ const Interface = () => {
 	};
 
 	// When user inputs answer, change the value.
-	const handleTimeInputChange = ( value ) => {
+	const handleTimeInputChange = ( value, mask ) => {
 		setAnswer( value );
 
 		const timeRegex = new RegExp( /\d\d\d\d/ ); // Check for 4 numbers.
@@ -62,7 +62,7 @@ const Interface = () => {
 			if ( checkAnswer( value ) ) {
 				console.log( 'winner' );
 			} else {
-				console.log( 'loser' );
+				// Loser.
 			}
 		}
 		// Todo: Move to next number.
@@ -74,7 +74,12 @@ const Interface = () => {
 
 	return (
 		<>
-			<form>
+			<form
+				onSubmit={ ( e ) => {
+					e.preventDefault();
+					maskedInputRef.select();
+				} }
+			>
 				{ currentTime }
 				<IMaskInput
 					type="text"
@@ -93,7 +98,7 @@ const Interface = () => {
 						}
 					} }
 					onAccept={ ( value, mask ) => {
-						handleTimeInputChange( value );
+						handleTimeInputChange( value, mask );
 					} }
 				/>
 				<input type="submit" value="Check Answer" />
