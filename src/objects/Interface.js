@@ -21,7 +21,9 @@ const Interface = () => {
 	const [ currentTime, setCurrentTime ] = useState( null );
 	const [ currentTimeMatch, setCurrentTimeMatch ] = useState( null );
 	const [ answer, setAnswer ] = useState( '' );
+	const [ autoSubmit, setAutoSubmit ] = useState( true );
 
+	// Set the initial time for the app.
 	const setTime = () => {
 		const dataIndex = getRandomTime();
 
@@ -34,17 +36,28 @@ const Interface = () => {
 		setTime();
 	}, [] );
 
+	/**
+	 * Check an answer for correctness.
+	 *
+	 * @param {number} answerToCheck The answer to check.
+	 * @return {boolean} true if valid, false if not.
+	 */
+	const checkAnswer = ( answerToCheck ) => {
+		return answerToCheck === currentTimeMatch || false;
+	};
+
 	// When user inputs answer, change the value.
 	const handleTimeInputChange = ( value ) => {
 		setAnswer( value );
 
-		if ( value === currentTimeMatch ) {
-			console.log( 'winner' );
+		const timeRegex = new RegExp( /\d\d\d\d/ ); // Check for 4 numbers.
+		if ( autoSubmit && timeRegex.test( value ) ) {
+			if ( checkAnswer( value ) ) {
+				console.log( 'winner' );
+			} else {
+				console.log( 'loser' );
+			}
 		}
-
-		// Todo: Check if value is 4 numbers (regex).
-		// Todo: If 4 numbers, check answer.
-		// Todo: Display alert for right answer.
 		// Todo: Move to next number.
 	};
 
@@ -54,18 +67,21 @@ const Interface = () => {
 
 	return (
 		<>
-			{ currentTime }
-			<IMaskInput
-				mask="00:00"
-				unmask={ true }
-				placeholderChar="_"
-				lazy={ false }
-				autoComplete="off"
-				value={ answer }
-				onAccept={ ( value, mask ) => {
-					handleTimeInputChange( value );
-				} }
-			/>
+			<form>
+				{ currentTime }
+				<IMaskInput
+					mask="00:00"
+					unmask={ true }
+					placeholderChar="_"
+					lazy={ false }
+					autoComplete="off"
+					value={ answer }
+					onAccept={ ( value, mask ) => {
+						handleTimeInputChange( value );
+					} }
+				/>
+				<input type="submit" value="Check Answer" />
+			</form>
 		</>
 	);
 };
