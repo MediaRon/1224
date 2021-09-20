@@ -18,7 +18,7 @@ $time_array = array();
 // (60/5)*24
 for ( $i = 0; $i < 288; $i++ ) {
 	$label = date( 'g:i a', $time );
-	$match = date( 'Hi', $time );
+	$match = date( 'H:i', $time );
 	$key = date( 'Hi', $time );
 
 	$time_array[ $key ] = array(

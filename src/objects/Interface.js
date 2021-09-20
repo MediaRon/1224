@@ -23,7 +23,7 @@ const TimeWrapper = styled.div`
 	font-family: utile, sans-serif;
 	font-size: 3em;
 	letter-spacing: 0.02em;
-	color: #b0c5e2;
+	color: #999999;
 	line-height: 1.2em;
 	text-align: center;
 `;
@@ -83,6 +83,7 @@ const Interface = () => {
 	const setTime = () => {
 		const dataIndex = getRandomTime();
 
+		setAnswer( '' );
 		setIndex( dataIndex );
 		setCurrentTime( TwelveHourData[ dataIndex ].label );
 		setCurrentTimeMatch( TwelveHourData[ dataIndex ].match );
@@ -90,9 +91,6 @@ const Interface = () => {
 
 	useEffect( () => {
 		setTime();
-
-		// Set focus.
-		//maskedInputRef.current.focus();
 	}, [] );
 
 	/**
@@ -102,22 +100,35 @@ const Interface = () => {
 	 * @return {boolean} true if valid, false if not.
 	 */
 	const checkAnswer = ( answerToCheck ) => {
-		return answerToCheck === currentTimeMatch || false;
+		const timeRegex = new RegExp( /\d\d:\d\d/ ); // Check for 4 numbers in format 00:00.
+		if ( timeRegex.test( answerToCheck ) ) {
+			if ( answerToCheck === currentTimeMatch ) {
+				return true;
+			}
+		}
+		return false;
 	};
 
 	// When user inputs answer, change the value.
 	const handleTimeInputChange = ( value, mask ) => {
 		setAnswer( value );
+	};
 
-		const timeRegex = new RegExp( /\d\d\d\d/ ); // Check for 4 numbers.
-		if ( autoSubmit && timeRegex.test( value ) ) {
-			if ( checkAnswer( value ) ) {
-				console.log( 'winner' );
-			} else {
-				// Loser.
-			}
+	/**
+	 * Handle the form submission and check the answer.
+	 *
+	 * @param {string} value The submitted answer.
+	 */
+	const handleFormSubmit = ( value ) => {
+		if ( checkAnswer( value ) ) {
+			console.log( 'winner' );
+			// todo: Trigger correct answer event.
+			setTime();
+		} else {
+			console.log( 'loser' );
+			console.log( value );
+			// todo: Trigger wrong answer event.
 		}
-		// Todo: Move to next number.
 	};
 
 	if ( null === index || null === currentTime ) {
@@ -130,6 +141,7 @@ const Interface = () => {
 				<form
 					onSubmit={ ( e ) => {
 						e.preventDefault();
+						handleFormSubmit( maskedInputRef.value ); // format in 12:24.
 						maskedInputRef.select();
 					} }
 				>
@@ -146,8 +158,6 @@ const Interface = () => {
 							if ( inputEl ) {
 								maskedInputRef = inputEl.element;
 								maskedInputRef.focus();
-								//maskedInputRef = inputEl;
-								//inputEl.current.focus();
 							}
 						} }
 						onAccept={ ( value, mask ) => {
