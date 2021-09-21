@@ -79,10 +79,11 @@ const Interface = () => {
 	const [ currentTimeMatch, setCurrentTimeMatch ] = useState( null );
 	const [ answer, setAnswer ] = useState( '' );
 	const [ autoSubmit, setAutoSubmit ] = useState( true );
-	const [ timer, setTimer ] = useState( 0 );
 	const [ timerObj, setTimerObj ] = useState( null );
 	const [ timerPercentage, setTimerPercentage ] = useState( 100 );
 
+	let timerInMilliseconds = 0;
+	let intervalKey = 0;
 	// Set the initial time for the app.
 	const setTime = () => {
 		const dataIndex = getRandomTime();
@@ -93,23 +94,26 @@ const Interface = () => {
 		setCurrentTimeMatch( TwelveHourData[ dataIndex ].match );
 	};
 
-	const decrementTime = ( timestamp ) => {
-		if ( timestamp > 7000 ) {
-			cancelAnimationFrame( timerObj );
+	const decrementTime = () => {
+		timerInMilliseconds = parseInt( timerInMilliseconds + 100 );
+		if ( timerInMilliseconds >= 7000 ) {
+			timerInMilliseconds = 0;
+			clearInterval( intervalKey );
 			setTimerPercentage( 0 );
 			return;
 		}
 
-		setTimerPercentage( 100 - Math.floor( ( timestamp / 7000 ) * 100 ) );
-		setTimerObj( requestAnimationFrame( decrementTime ) );
+		setTimerPercentage(
+			100 - Math.floor( ( timerInMilliseconds / 7000 ) * 100 )
+		);
 	};
 
 	/**
 	 * Set up a 7-second timer to countdown to zero.
 	 */
 	const startTimer = () => {
-		setTimer( 7000 );
-		setTimerObj( requestAnimationFrame( decrementTime ) );
+		setTimerPercentage( 100 );
+		intervalKey = setInterval( decrementTime, 100 );
 	};
 
 	useEffect( () => {

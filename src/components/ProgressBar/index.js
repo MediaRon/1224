@@ -14,7 +14,7 @@ const ProgressBarInner = styled.div`
 	height: 5px;
 	width: 100%;
 	background: linear-gradient( to bottom, #46bf76, #46bf76 );
-	transition: background-color 0.02s ease-in-out;
+	transition: width 100ms linear;
 	transform-origin: left center;
 	border-radius: 5px;
 `;
