@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 import { IMaskMixin } from 'react-imask';
 import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
+import ProgressBar from '../components/ProgressBar';
 
 //Wrapper around the game interface.
 const InterfaceWrapper = styled.section`
@@ -78,6 +79,9 @@ const Interface = () => {
 	const [ currentTimeMatch, setCurrentTimeMatch ] = useState( null );
 	const [ answer, setAnswer ] = useState( '' );
 	const [ autoSubmit, setAutoSubmit ] = useState( true );
+	const [ timer, setTimer ] = useState( 0 );
+	const [ timerObj, setTimerObj ] = useState( null );
+	const [ timerPercentage, setTimerPercentage ] = useState( 100 );
 
 	// Set the initial time for the app.
 	const setTime = () => {
@@ -89,8 +93,28 @@ const Interface = () => {
 		setCurrentTimeMatch( TwelveHourData[ dataIndex ].match );
 	};
 
+	const decrementTime = ( timestamp ) => {
+		if ( timestamp > 7000 ) {
+			cancelAnimationFrame( timerObj );
+			setTimerPercentage( 0 );
+			return;
+		}
+
+		setTimerPercentage( 100 - Math.floor( ( timestamp / 7000 ) * 100 ) );
+		setTimerObj( requestAnimationFrame( decrementTime ) );
+	};
+
+	/**
+	 * Set up a 7-second timer to countdown to zero.
+	 */
+	const startTimer = () => {
+		setTimer( 7000 );
+		setTimerObj( requestAnimationFrame( decrementTime ) );
+	};
+
 	useEffect( () => {
 		setTime();
+		startTimer();
 	}, [] );
 
 	/**
@@ -167,6 +191,7 @@ const Interface = () => {
 					/>
 					<StyledSubmitButton type="submit" value="Check Answer" />
 				</form>
+				<ProgressBar percentage={ timerPercentage } />
 			</InterfaceWrapper>
 		</>
 	);
