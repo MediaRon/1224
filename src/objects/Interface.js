@@ -69,7 +69,11 @@ const getRandomTime = () => {
 	return Math.floor( Math.random() * ( CEILING - FLOOR + 1 ) + FLOOR );
 };
 
-const Interface = () => {
+// Vars set with wide scope to work with timers and state.
+let timerInMilliseconds = 0;
+let intervalKey = 0;
+
+const Interface = ( props ) => {
 	// Set ref to input component.
 	let maskedInputRef = useRef();
 
@@ -82,8 +86,6 @@ const Interface = () => {
 	const [ timerObj, setTimerObj ] = useState( null );
 	const [ timerPercentage, setTimerPercentage ] = useState( 100 );
 
-	let timerInMilliseconds = 0;
-	let intervalKey = 0;
 	// Set the initial time for the app.
 	const setTime = () => {
 		const dataIndex = getRandomTime();
@@ -98,8 +100,12 @@ const Interface = () => {
 		timerInMilliseconds = parseInt( timerInMilliseconds + 100 );
 		if ( timerInMilliseconds >= 7000 ) {
 			timerInMilliseconds = 0;
+			console.log( intervalKey );
 			clearInterval( intervalKey );
 			setTimerPercentage( 0 );
+
+			// Sent answer event back to parent.
+			props.onAnswer( false, 0 );
 			return;
 		}
 
@@ -113,6 +119,7 @@ const Interface = () => {
 	 */
 	const startTimer = () => {
 		setTimerPercentage( 100 );
+		timerInMilliseconds = 0;
 		intervalKey = setInterval( decrementTime, 100 );
 	};
 
@@ -149,12 +156,11 @@ const Interface = () => {
 	 */
 	const handleFormSubmit = ( value ) => {
 		if ( checkAnswer( value ) ) {
-			console.log( 'winner' );
-			// todo: Trigger correct answer event.
-			setTime();
+			console.log( intervalKey );
+			clearInterval( intervalKey );
+			console.log( timerInMilliseconds );
+			props.onAnswer( true, timerInMilliseconds );
 		} else {
-			console.log( 'loser' );
-			console.log( value );
 			// todo: Trigger wrong answer event.
 		}
 	};
