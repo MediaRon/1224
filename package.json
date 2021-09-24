@@ -44,6 +44,7 @@
     "@wordpress/eslint-plugin": "^9.1.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "react-imask": "^6.2.2"
+    "react-imask": "^6.2.2",
+    "use-keyboard-shortcut": "^1.0.6"
   }
 }

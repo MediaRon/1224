@@ -4,7 +4,7 @@
  * The Game Interface Wrapper.
  */
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { IMaskMixin } from 'react-imask';
 import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
@@ -71,62 +71,74 @@ const getRandomTime = () => {
 
 // Vars set with wide scope to work with timers and state.
 let timerInMilliseconds = 0;
-let intervalKey = 0;
 
-const Interface = ( props ) => {
-	// Set ref to input component.
-	let maskedInputRef = useRef();
+class Interface extends React.Component {
+	constructor( props ) {
+		super( props );
 
-	// Set state.
-	const [ index, setIndex ] = useState( null );
-	const [ currentTime, setCurrentTime ] = useState( null );
-	const [ currentTimeMatch, setCurrentTimeMatch ] = useState( null );
-	const [ answer, setAnswer ] = useState( '' );
-	const [ autoSubmit, setAutoSubmit ] = useState( true );
-	const [ timerObj, setTimerObj ] = useState( null );
-	const [ timerPercentage, setTimerPercentage ] = useState( 100 );
+		this.state = {
+			index: null,
+			currentTime: null,
+			currentTimeMatch: null,
+			answer: '',
+			autoSubmit: false,
+			timerObj: null,
+			timerPercentage: 100,
+			intervalKey: {},
+		};
+
+		this.maskedInput = React.createRef( null );
+	}
 
 	// Set the initial time for the app.
-	const setTime = () => {
+	setTime = () => {
 		const dataIndex = getRandomTime();
 
-		setAnswer( '' );
-		setIndex( dataIndex );
-		setCurrentTime( TwelveHourData[ dataIndex ].label );
-		setCurrentTimeMatch( TwelveHourData[ dataIndex ].match );
+		this.setState( {
+			answer: '',
+			index: dataIndex,
+			currentTime: TwelveHourData[ dataIndex ].label,
+			currentTimeMatch: TwelveHourData[ dataIndex ].match,
+		} );
 	};
 
-	const decrementTime = () => {
+	decrementTime = () => {
 		timerInMilliseconds = parseInt( timerInMilliseconds + 100 );
 		if ( timerInMilliseconds >= 7000 ) {
 			timerInMilliseconds = 0;
-			console.log( intervalKey );
-			clearInterval( intervalKey );
-			setTimerPercentage( 0 );
+			clearInterval( this.state.intervalKey );
+			this.setState( {
+				timerPercentage: 0,
+			} );
 
 			// Sent answer event back to parent.
-			props.onAnswer( false, 0 );
+			this.props.onAnswer( false, 0 );
 			return;
 		}
 
-		setTimerPercentage(
-			100 - Math.floor( ( timerInMilliseconds / 7000 ) * 100 )
-		);
+		this.setState( {
+			timerPercentage:
+				100 - Math.floor( ( timerInMilliseconds / 7000 ) * 100 ),
+		} );
 	};
 
 	/**
 	 * Set up a 7-second timer to countdown to zero.
 	 */
-	const startTimer = () => {
-		setTimerPercentage( 100 );
-		timerInMilliseconds = 0;
-		intervalKey = setInterval( decrementTime, 100 );
+	startTimer = () => {
+		this.setState( {
+			timerPercentage: 100,
+			intervalKey: setInterval( this.decrementTime, 100 ),
+		} );
 	};
 
-	useEffect( () => {
-		setTime();
-		startTimer();
-	}, [] );
+	componentDidMount = () => {
+		this.setTime();
+		this.startTimer();
+
+		// Provide focus to masked input.
+		this.maskedInput.current.element.focus();
+	};
 
 	/**
 	 * Check an answer for correctness.
@@ -134,10 +146,10 @@ const Interface = ( props ) => {
 	 * @param {number} answerToCheck The answer to check.
 	 * @return {boolean} true if valid, false if not.
 	 */
-	const checkAnswer = ( answerToCheck ) => {
-		const timeRegex = new RegExp( /\d\d:\d\d/ ); // Check for 4 numbers in format 00:00.
+	checkAnswer = ( answerToCheck ) => {
+		const timeRegex = new RegExp( /\d\d\d\d/ ); // Check for 4 numbers in format 00:00.
 		if ( timeRegex.test( answerToCheck ) ) {
-			if ( answerToCheck === currentTimeMatch ) {
+			if ( answerToCheck === this.state.currentTimeMatch ) {
 				return true;
 			}
 		}
@@ -145,8 +157,10 @@ const Interface = ( props ) => {
 	};
 
 	// When user inputs answer, change the value.
-	const handleTimeInputChange = ( value, mask ) => {
-		setAnswer( value );
+	handleTimeInputChange = ( value, mask ) => {
+		this.setState( {
+			answer: value,
+		} );
 	};
 
 	/**
@@ -154,57 +168,52 @@ const Interface = ( props ) => {
 	 *
 	 * @param {string} value The submitted answer.
 	 */
-	const handleFormSubmit = ( value ) => {
-		if ( checkAnswer( value ) ) {
-			console.log( intervalKey );
-			clearInterval( intervalKey );
-			console.log( timerInMilliseconds );
-			props.onAnswer( true, timerInMilliseconds );
+	handleFormSubmit = ( value ) => {
+		if ( this.checkAnswer( value ) ) {
+			clearInterval( this.state.intervalKey );
+			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
 			// todo: Trigger wrong answer event.
 		}
 	};
 
-	if ( null === index || null === currentTime ) {
-		return <></>;
+	render() {
+		return (
+			<>
+				<InterfaceWrapper>
+					<form
+						onSubmit={ ( e ) => {
+							e.preventDefault();
+							this.handleFormSubmit( this.state.answer );
+						} }
+					>
+						<TimeWrapper>{ this.state.currentTime }</TimeWrapper>
+						<MaskedStyledInput
+							type="text"
+							mask="00:00"
+							unmask={ true }
+							placeholderChar="_"
+							lazy={ false }
+							autoComplete="off"
+							value={ this.state.answer }
+							ref={ this.maskedInput }
+							onAccept={ ( value, mask ) => {
+								this.setState( {
+									answer: value,
+								} );
+							} }
+							aria-label={ `Convert ${ this.state.currentTime } to 24-hour time.` }
+						/>
+						<StyledSubmitButton
+							type="submit"
+							value="Check Answer"
+						/>
+					</form>
+					<ProgressBar percentage={ this.state.timerPercentage } />
+				</InterfaceWrapper>
+			</>
+		);
 	}
-
-	return (
-		<>
-			<InterfaceWrapper>
-				<form
-					onSubmit={ ( e ) => {
-						e.preventDefault();
-						handleFormSubmit( maskedInputRef.value ); // format in 12:24.
-						maskedInputRef.select();
-					} }
-				>
-					<TimeWrapper>{ currentTime }</TimeWrapper>
-					<MaskedStyledInput
-						type="text"
-						mask="00:00"
-						unmask={ true }
-						placeholderChar="_"
-						lazy={ false }
-						autoComplete="off"
-						value={ answer }
-						ref={ ( inputEl ) => {
-							if ( inputEl ) {
-								maskedInputRef = inputEl.element;
-								maskedInputRef.focus();
-							}
-						} }
-						onAccept={ ( value, mask ) => {
-							handleTimeInputChange( value, mask );
-						} }
-						aria-label={ `Convert ${ currentTime } to 24-hour time.` }
-					/>
-					<StyledSubmitButton type="submit" value="Check Answer" />
-				</form>
-				<ProgressBar percentage={ timerPercentage } />
-			</InterfaceWrapper>
-		</>
-	);
-};
+}
 
 export default Interface;
