@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { IMaskMixin } from 'react-imask';
+import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
 import ProgressBar from '../components/ProgressBar';
@@ -146,10 +147,16 @@ class Interface extends React.Component {
 					paused: true,
 				} );
 			} else {
-				this.setState( {
-					intervalKey: setInterval( this.decrementTime, 100 ),
-					paused: false,
-				} );
+				this.setState(
+					{
+						intervalKey: setInterval( this.decrementTime, 100 ),
+						paused: false,
+					},
+					() => {
+						// Provide focus to masked input.
+						this.maskedInput.current.element.focus();
+					}
+				);
 			}
 		}
 	};
@@ -196,9 +203,16 @@ class Interface extends React.Component {
 	handleFormSubmit = ( value ) => {
 		if ( this.checkAnswer( value ) ) {
 			clearInterval( this.state.intervalKey );
+			timerInMilliseconds = 0;
 			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
 			// todo: Trigger wrong answer event.
+		}
+	};
+
+	handleKeyPress = ( e ) => {
+		if ( e.key === ' ' ) {
+			this.props.onSpacebarPress();
 		}
 	};
 
@@ -223,6 +237,7 @@ class Interface extends React.Component {
 							disabled={ this.state.paused }
 							value={ this.state.answer }
 							ref={ this.maskedInput }
+							onKeyPress={ ( e ) => this.handleKeyPress( e ) }
 							onAccept={ ( value, mask ) => {
 								this.setState( {
 									answer: value,

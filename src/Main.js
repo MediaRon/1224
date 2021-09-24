@@ -25,6 +25,13 @@ const Main = () => {
 				} }
 				key={ key }
 				paused={ paused }
+				onSpacebarPress={ () => {
+					if ( false === paused ) {
+						setPaused( true );
+					} else {
+						setPaused( false );
+					}
+				} }
 			/>
 		</Container>
 	);
