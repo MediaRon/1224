@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from 'react-router-dom';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 import Container from './objects/Container';
 import Header from './objects/Header';
@@ -17,23 +24,47 @@ const Main = () => {
 		}
 	} );
 	return (
-		<Container>
-			<Header />
-			<Interface
-				onAnswer={ ( isCorrect, timeInMilliseconds ) => {
-					setKey( key + 1 );
-				} }
-				key={ key }
-				paused={ paused }
-				onSpacebarPress={ () => {
-					if ( false === paused ) {
-						setPaused( true );
-					} else {
-						setPaused( false );
-					}
-				} }
-			/>
-		</Container>
+		<>
+			<Router>
+				<Switch>
+					<Route exact path="/new/">
+						<>
+							<Container>
+								<Header />
+							</Container>
+						</>
+					</Route>
+					<Route path="/users">
+						<></>
+					</Route>
+					<Route exact path="/">
+						<>
+							<Container>
+								<Header />
+								<Interface
+									onAnswer={ (
+										isCorrect,
+										timeInMilliseconds
+									) => {
+										setKey( key + 1 );
+									} }
+									key={ key }
+									paused={ paused }
+									onSpacebarPress={ () => {
+										if ( false === paused ) {
+											setPaused( true );
+										} else {
+											setPaused( false );
+										}
+									} }
+								/>
+							</Container>
+						</>
+					</Route>
+					<Redirect to="/" />
+				</Switch>
+			</Router>
+		</>
 	);
 };
 
