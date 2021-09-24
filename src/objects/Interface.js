@@ -85,6 +85,7 @@ class Interface extends React.Component {
 			timerObj: null,
 			timerPercentage: 100,
 			intervalKey: {},
+			paused: props.paused || false,
 		};
 
 		this.maskedInput = React.createRef( null );
@@ -132,9 +133,23 @@ class Interface extends React.Component {
 		} );
 	};
 
+	componentDidUpdate = ( prevProps, prevState ) => {
+		if ( this.props.paused !== prevProps.paused ) {
+			if ( this.props.paused ) {
+				clearInterval( this.state.intervalKey );
+			} else {
+				this.setState( {
+					intervalKey: setInterval( this.decrementTime, 100 ),
+				} );
+			}
+		}
+	};
+
 	componentDidMount = () => {
 		this.setTime();
 		this.startTimer();
+
+		console.log( this.state.paused );
 
 		// Provide focus to masked input.
 		this.maskedInput.current.element.focus();

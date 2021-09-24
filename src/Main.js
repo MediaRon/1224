@@ -8,9 +8,13 @@ import './styles.scss';
 
 const Main = () => {
 	const [ key, setKey ] = useState( 0 );
+	const [ paused, setPaused ] = useState( false );
 	useKeyboardShortcut( [ ' ' ], () => {
-		// eslint-disable-next-line no-console
-		console.log( 'spacebar pressed' );
+		if ( ! paused ) {
+			setPaused( true );
+		} else {
+			setPaused( false );
+		}
 	} );
 	return (
 		<Container>
@@ -20,6 +24,7 @@ const Main = () => {
 					setKey( key + 1 );
 				} }
 				key={ key }
+				paused={ paused }
 			/>
 		</Container>
 	);
