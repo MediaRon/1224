@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 /**
  * The Game Interface Wrapper.
  */
@@ -133,23 +132,34 @@ class Interface extends React.Component {
 		} );
 	};
 
+	/**
+	 * Check for a paused state.
+	 *
+	 * @param {*} prevProps Previous props.
+	 * @param {*} prevState Previous state.
+	 */
 	componentDidUpdate = ( prevProps, prevState ) => {
 		if ( this.props.paused !== prevProps.paused ) {
 			if ( this.props.paused ) {
 				clearInterval( this.state.intervalKey );
+				this.setState( {
+					paused: true,
+				} );
 			} else {
 				this.setState( {
 					intervalKey: setInterval( this.decrementTime, 100 ),
+					paused: false,
 				} );
 			}
 		}
 	};
 
+	/**
+	 * Set time, start timer, and focus input.
+	 */
 	componentDidMount = () => {
 		this.setTime();
 		this.startTimer();
-
-		console.log( this.state.paused );
 
 		// Provide focus to masked input.
 		this.maskedInput.current.element.focus();
@@ -210,6 +220,7 @@ class Interface extends React.Component {
 							placeholderChar="_"
 							lazy={ false }
 							autoComplete="off"
+							disabled={ this.state.paused }
 							value={ this.state.answer }
 							ref={ this.maskedInput }
 							onAccept={ ( value, mask ) => {
