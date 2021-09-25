@@ -3,9 +3,8 @@
  * The Game Interface Wrapper.
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { IMaskMixin } from 'react-imask';
-import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
 import ProgressBar from '../components/ProgressBar';
@@ -62,7 +61,7 @@ const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
 	<StyledMaskedInput { ...props } ref={ inputRef } />
 ) );
 
-const CEILING = 240;
+const CEILING = 287;
 const FLOOR = 1;
 
 const getRandomTime = () => {
@@ -172,6 +171,8 @@ class Interface extends React.Component {
 	 * Set time, start timer, and focus input.
 	 */
 	componentDidMount = () => {
+		timerInMilliseconds = 0; // For game refreshes (When "N" is pressed).
+		this.stopTimer(); // For game refreshes.
 		this.setTime();
 		this.startTimer();
 
@@ -220,13 +221,16 @@ class Interface extends React.Component {
 			timerInMilliseconds = 0;
 			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
-			// todo: Trigger wrong answer event.
+			this.props.onAnswer( false, timerInMilliseconds );
 		}
 	};
 
 	handleKeyPress = ( e ) => {
 		if ( e.key === ' ' ) {
 			this.props.onSpacebarPress();
+		}
+		if ( e.key === 'n' ) {
+			this.props.onKeyPressN();
 		}
 	};
 
