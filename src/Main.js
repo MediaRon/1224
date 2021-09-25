@@ -11,6 +11,7 @@ import Container from './objects/Container';
 import Header from './objects/Header';
 import Games from './objects/Games';
 import Practice from './games/Practice';
+import Points from './games/Points';
 import './styles.scss';
 
 const Main = () => {
@@ -26,8 +27,10 @@ const Main = () => {
 							</Container>
 						</>
 					</Route>
-					<Route path="/users">
-						<></>
+					<Route exact path="/games/points/">
+						<>
+							<Points />
+						</>
 					</Route>
 					<Route exact path="/">
 						<>

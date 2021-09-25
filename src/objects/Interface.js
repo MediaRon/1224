@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /**
  * The Game Interface Wrapper.
@@ -221,10 +222,10 @@ class Interface extends React.Component {
 	handleFormSubmit = ( value ) => {
 		if ( this.checkAnswer( value ) ) {
 			this.stopTimer();
+			this.props.onAnswer( true, 7000 - timerInMilliseconds );
 			timerInMilliseconds = 0;
-			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
-			this.props.onAnswer( false, timerInMilliseconds );
+			this.props.onAnswer( false, 7000 - timerInMilliseconds );
 		}
 	};
 
