@@ -11,6 +11,7 @@ import useKeyboardShortcut from 'use-keyboard-shortcut';
 import Container from './objects/Container';
 import Header from './objects/Header';
 import Interface from './objects/Interface';
+import Games from './objects/Games';
 import './styles.scss';
 
 const Main = () => {
@@ -31,6 +32,7 @@ const Main = () => {
 						<>
 							<Container>
 								<Header />
+								<Games />
 							</Container>
 						</>
 					</Route>
@@ -40,7 +42,7 @@ const Main = () => {
 					<Route exact path="/">
 						<>
 							<Container>
-								<Header />
+								<Header showIntro={ true } />
 								<Interface
 									onAnswer={ (
 										isCorrect,
