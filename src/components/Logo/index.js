@@ -9,7 +9,7 @@ const LogoStyles = styled.div`
 `;
 
 const Logo = ( props ) => {
-	const { width = 450, height = 170, fill = '#FFFDF4' } = props;
+	const { width = 324, height = 120, fill = '#FFFDF4' } = props;
 	return (
 		<LogoStyles>
 			<svg
@@ -43,8 +43,8 @@ Logo.propTypes = {
 	fill: PropTypes.string.isRequired,
 };
 Logo.defaultProps = {
-	width: 450,
-	height: 170,
+	width: 324,
+	height: 120,
 	fill: '#FFFDF4',
 };
 export default Logo;
