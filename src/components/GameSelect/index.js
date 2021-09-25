@@ -12,6 +12,7 @@ const GameSelectStyles = styled.div`
 	padding: 15px 20px;
 	border-radius: 10px;
 	margin-bottom: 15px;
+	border: 1px solid #999;
 `;
 const GameIconWrapper = styled.div`
 	max-width: 150px;

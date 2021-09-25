@@ -107,7 +107,7 @@ class Interface extends React.Component {
 		timerInMilliseconds = parseInt( timerInMilliseconds + 100 );
 		if ( timerInMilliseconds >= 7000 ) {
 			timerInMilliseconds = 0;
-			clearInterval( this.state.intervalKey );
+			this.stopTimer();
 			this.setState( {
 				timerPercentage: 0,
 			} );
@@ -134,6 +134,13 @@ class Interface extends React.Component {
 	};
 
 	/**
+	 * Stop the timer/countdown.
+	 */
+	stopTimer = () => {
+		clearInterval( this.state.intervalKey );
+	};
+
+	/**
 	 * Check for a paused state.
 	 *
 	 * @param {*} prevProps Previous props.
@@ -142,7 +149,7 @@ class Interface extends React.Component {
 	componentDidUpdate = ( prevProps, prevState ) => {
 		if ( this.props.paused !== prevProps.paused ) {
 			if ( this.props.paused ) {
-				clearInterval( this.state.intervalKey );
+				this.stopTimer();
 				this.setState( {
 					paused: true,
 				} );
@@ -170,6 +177,13 @@ class Interface extends React.Component {
 
 		// Provide focus to masked input.
 		this.maskedInput.current.element.focus();
+	};
+
+	/**
+	 * Reset any timers on unount.
+	 */
+	componentWillUnmount = () => {
+		this.stopTimer();
 	};
 
 	/**
@@ -202,7 +216,7 @@ class Interface extends React.Component {
 	 */
 	handleFormSubmit = ( value ) => {
 		if ( this.checkAnswer( value ) ) {
-			clearInterval( this.state.intervalKey );
+			this.stopTimer();
 			timerInMilliseconds = 0;
 			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
