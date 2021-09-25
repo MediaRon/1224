@@ -126,6 +126,7 @@ class Interface extends React.Component {
 	 * Set up a 7-second timer to countdown to zero.
 	 */
 	startTimer = () => {
+		timerInMilliseconds = 0;
 		this.setState( {
 			timerPercentage: 100,
 			intervalKey: setInterval( this.decrementTime, 100 ),
@@ -153,6 +154,7 @@ class Interface extends React.Component {
 					paused: true,
 				} );
 			} else {
+				this.stopTimer();
 				this.setState(
 					{
 						intervalKey: setInterval( this.decrementTime, 100 ),
@@ -184,6 +186,7 @@ class Interface extends React.Component {
 	 * Reset any timers on unount.
 	 */
 	componentWillUnmount = () => {
+		timerInMilliseconds = 0;
 		this.stopTimer();
 	};
 
