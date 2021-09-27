@@ -3,6 +3,7 @@ export default function Sloth( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 3563.71 1647.31"
+			width="225"
 			{ ...props }
 		>
 			<path

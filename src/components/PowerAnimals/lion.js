@@ -3,6 +3,7 @@ export default function Lion( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 168.64 212.96"
+			width="225"
 			{ ...props }
 		>
 			<path

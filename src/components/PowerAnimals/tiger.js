@@ -3,6 +3,7 @@ export default function Tiger( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 172.7 177.93"
+			width="225"
 			{ ...props }
 		>
 			<path

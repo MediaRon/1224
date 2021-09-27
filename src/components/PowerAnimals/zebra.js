@@ -3,6 +3,7 @@ export default function Zebra( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 146.84 197.76"
+			width="225"
 			{ ...props }
 		>
 			<path

@@ -3,6 +3,7 @@ export default function Elephant( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 234.02 196.43"
+			width="225"
 			{ ...props }
 		>
 			<path

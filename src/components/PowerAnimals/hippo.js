@@ -3,6 +3,7 @@ export default function Hippo( props ) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 151.06 175.83"
+			width="225"
 			{ ...props }
 		>
 			<path
