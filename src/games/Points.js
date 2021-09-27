@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
+import ShareResults from '../components/ShareResults';
 import Container from '../objects/Container';
 import Header from '../objects/Header';
 import Interface from '../objects/Interface';
@@ -158,7 +159,16 @@ const Points = ( props ) => {
 		);
 	};
 
-	return <>{ endOfGame ? <>test</> : <>{ gameInterface() }</> }</>;
+	const shareResults = () => {
+		return (
+			<Container>
+				<Header showIntro={ false } />
+				<ShareResults total={ points } />
+			</Container>
+		);
+	};
+
+	return <>{ endOfGame ? shareResults() : gameInterface() }</>;
 };
 
 export default Points;
