@@ -6,6 +6,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
+import styled from 'styled-components';
 import Container from '../objects/Container';
 import Header from '../objects/Header';
 import Interface from '../objects/Interface';
@@ -26,22 +27,37 @@ const calculatePoints = ( milliseconds ) => {
 	};
 };
 
+const FooterStyles = styled.footer`
+	display: grid;
+	width: 100%;
+	justify-items: center;
+	grid-template-columns: 1fr 1fr 1fr;
+	position: fixed;
+	bottom: 0;
+	background: #000;
+	color: #f6d900;
+	font-size: 1.2em;
+	padding: 10px 15px;
+`;
+
+// For some odd reason, setting state with interval doesn't work in functional components.
+let timerInveralKey = {};
+
 const Points = ( props ) => {
 	const [ key, setKey ] = useState( 0 );
 	const [ paused, setPaused ] = useState( false );
 	const [ points, setPoints ] = useState( 0 );
 	const [ bonus, setBonus ] = useState( 0 );
-	const [ intervalKey, setIntervalKey ] = useState( null );
 	const [ timeLeft, setTimeLeft ] = useState( 0 );
+	const [ endOfGame, setEndOfGame ] = useState( false );
 
 	useKeyboardShortcut( [ ' ' ], () => {
-		if ( ! paused ) {
-			setPaused( true );
-		} else {
-			setPaused( false );
-		}
+		handlePauseState( ! paused );
 	} );
 	useKeyboardShortcut( [ 'n' ], () => {
+		if ( endOfGame ) {
+			return;
+		}
 		setKey( key + 1 );
 	} );
 
@@ -54,6 +70,24 @@ const Points = ( props ) => {
 		};
 	}, [] );
 
+	/**
+	 * Updates the state when the pause button is pushed.
+	 *
+	 * @param {boolean} isPaused true if paused, false if not.
+	 */
+	const handlePauseState = ( isPaused ) => {
+		if ( endOfGame ) {
+			return;
+		}
+		if ( isPaused ) {
+			setPaused( true );
+			stopTimer();
+		} else {
+			setPaused( false );
+			startTimer();
+		}
+	};
+
 	const decrementTime = () => {
 		timeRemainingInSeconds = parseInt( timeRemainingInSeconds - 1 );
 		// eslint-disable-next-line no-console
@@ -61,6 +95,7 @@ const Points = ( props ) => {
 		if ( timeRemainingInSeconds <= 0 ) {
 			// Game over.
 			stopTimer();
+			setEndOfGame( true );
 		}
 	};
 
@@ -68,55 +103,62 @@ const Points = ( props ) => {
 	 * Set up a 45-second timer to countdown to zero.
 	 */
 	const startTimer = () => {
-		timeRemainingInSeconds = 45;
-		setIntervalKey( setInterval( decrementTime, 1000 ) );
+		timerInveralKey = setInterval( decrementTime, 1000 );
 	};
 
 	/**
 	 * Stop the timer/countdown.
 	 */
 	const stopTimer = () => {
-		clearInterval( intervalKey );
+		clearInterval( timerInveralKey );
 	};
 
-	return (
-		<>
-			<Container>
-				<Header showIntro={ false } />
-				<Interface
-					onAnswer={ ( isCorrect, timeInMilliseconds ) => {
-						if ( isCorrect || 0 === timeInMilliseconds ) {
-							if ( isCorrect ) {
-								const pointsResult = calculatePoints(
-									timeInMilliseconds
-								);
-								setPoints( points + pointsResult.totalPoints );
-								setBonus( pointsResult.bonusPoints );
+	const gameInterface = () => {
+		return (
+			<>
+				<Container>
+					<Header showIntro={ false } />
+					<Interface
+						onAnswer={ ( isCorrect, timeInMilliseconds ) => {
+							if ( isCorrect || 0 === timeInMilliseconds ) {
+								if ( isCorrect ) {
+									const pointsResult = calculatePoints(
+										timeInMilliseconds
+									);
+									setPoints(
+										points + pointsResult.totalPoints
+									);
+									setBonus( pointsResult.bonusPoints );
+								}
+								setKey( key + 1 );
+							} else {
+								// Be evil here and substract points? :D
 							}
+						} }
+						key={ key }
+						paused={ paused }
+						onSpacebarPress={ () => {
+							handlePauseState( ! paused );
+						} }
+						onKeyPressN={ () => {
 							setKey( key + 1 );
-						} else {
-							// Be evil here and substract points? :D
-						}
-					} }
-					key={ key }
-					paused={ paused }
-					onSpacebarPress={ () => {
-						if ( false === paused ) {
-							setPaused( true );
-						} else {
-							setPaused( false );
-						}
-					} }
-					onKeyPressN={ () => {
-						setKey( key + 1 );
-					} }
-				/>
-				{ timeLeft }
-				Total Points: { points }
-				Bonus: { bonus }
-			</Container>
-		</>
-	);
+						} }
+					/>
+				</Container>
+				<FooterStyles>
+					<>
+						<div className="time-left">
+							Time Left: { timeLeft }s
+						</div>
+						<div>Total Points: { points }</div>
+						<div>Bonus: { bonus }</div>
+					</>
+				</FooterStyles>
+			</>
+		);
+	};
+
+	return <>{ endOfGame ? <>test</> : <>{ gameInterface() }</> }</>;
 };
 
 export default Points;
