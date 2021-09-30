@@ -18,36 +18,36 @@ const ShareResults = ( props ) => {
 	const { total, animal } = props;
 
 	const getPowerAnimal = ( points ) => {
-		if ( 0 === points || 10 > points ) {
+		if ( 0 === points || 30 > points ) {
 			// 0-9 Sloth.
 			return <PowerAnimals.Sloth />;
 		}
 		// 10-20 Giraffe.
-		if ( points >= 10 && points <= 20 ) {
+		if ( points >= 30 && points <= 50 ) {
 			return <PowerAnimals.Giraffe />;
 		}
 		// 20-50 Elephant.
-		if ( points >= 20 && points <= 50 ) {
+		if ( points >= 50 && points <= 80 ) {
 			return <PowerAnimals.Elephant />;
 		}
 		// 50-70 Fox.
-		if ( points >= 50 && points <= 70 ) {
+		if ( points >= 80 && points <= 120 ) {
 			return <PowerAnimals.Fox />;
 		}
 		// 70-90 Lion.
-		if ( points >= 70 && points <= 90 ) {
+		if ( points >= 120 && points <= 150 ) {
 			return <PowerAnimals.Lion />;
 		}
 		// 90-100 Tiger.
-		if ( points >= 90 && points <= 100 ) {
+		if ( points >= 150 && points <= 200 ) {
 			return <PowerAnimals.Tiger />;
 		}
 		// 100-120 Hippo.
-		if ( points >= 100 && points <= 120 ) {
+		if ( points >= 200 && points <= 240 ) {
 			return <PowerAnimals.Hippo />;
 		}
 		// > 120 Zebra.
-		if ( points >= 120 ) {
+		if ( points >= 240 ) {
 			return <PowerAnimals.Zebra />;
 		}
 	};
