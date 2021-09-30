@@ -1,11 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /**
  * The Game Interface Wrapper.
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { IMaskMixin } from 'react-imask';
-import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
 import TwelveHourData from '../data/TwelveHour';
 import ProgressBar from '../components/ProgressBar';
@@ -62,7 +62,7 @@ const MaskedStyledInput = IMaskMixin( ( { inputRef, ...props } ) => (
 	<StyledMaskedInput { ...props } ref={ inputRef } />
 ) );
 
-const CEILING = 240;
+const CEILING = 287;
 const FLOOR = 1;
 
 const getRandomTime = () => {
@@ -107,7 +107,7 @@ class Interface extends React.Component {
 		timerInMilliseconds = parseInt( timerInMilliseconds + 100 );
 		if ( timerInMilliseconds >= 7000 ) {
 			timerInMilliseconds = 0;
-			clearInterval( this.state.intervalKey );
+			this.stopTimer();
 			this.setState( {
 				timerPercentage: 0,
 			} );
@@ -127,10 +127,18 @@ class Interface extends React.Component {
 	 * Set up a 7-second timer to countdown to zero.
 	 */
 	startTimer = () => {
+		timerInMilliseconds = 0;
 		this.setState( {
 			timerPercentage: 100,
 			intervalKey: setInterval( this.decrementTime, 100 ),
 		} );
+	};
+
+	/**
+	 * Stop the timer/countdown.
+	 */
+	stopTimer = () => {
+		clearInterval( this.state.intervalKey );
 	};
 
 	/**
@@ -142,11 +150,12 @@ class Interface extends React.Component {
 	componentDidUpdate = ( prevProps, prevState ) => {
 		if ( this.props.paused !== prevProps.paused ) {
 			if ( this.props.paused ) {
-				clearInterval( this.state.intervalKey );
+				this.stopTimer();
 				this.setState( {
 					paused: true,
 				} );
 			} else {
+				this.stopTimer();
 				this.setState(
 					{
 						intervalKey: setInterval( this.decrementTime, 100 ),
@@ -165,11 +174,21 @@ class Interface extends React.Component {
 	 * Set time, start timer, and focus input.
 	 */
 	componentDidMount = () => {
+		timerInMilliseconds = 0; // For game refreshes (When "N" is pressed).
+		this.stopTimer(); // For game refreshes.
 		this.setTime();
 		this.startTimer();
 
 		// Provide focus to masked input.
 		this.maskedInput.current.element.focus();
+	};
+
+	/**
+	 * Reset any timers on unount.
+	 */
+	componentWillUnmount = () => {
+		timerInMilliseconds = 0;
+		this.stopTimer();
 	};
 
 	/**
@@ -202,17 +221,20 @@ class Interface extends React.Component {
 	 */
 	handleFormSubmit = ( value ) => {
 		if ( this.checkAnswer( value ) ) {
-			clearInterval( this.state.intervalKey );
+			this.stopTimer();
+			this.props.onAnswer( true, 7000 - timerInMilliseconds );
 			timerInMilliseconds = 0;
-			this.props.onAnswer( true, timerInMilliseconds );
 		} else {
-			// todo: Trigger wrong answer event.
+			this.props.onAnswer( false, 7000 - timerInMilliseconds );
 		}
 	};
 
 	handleKeyPress = ( e ) => {
 		if ( e.key === ' ' ) {
 			this.props.onSpacebarPress();
+		}
+		if ( e.key === 'n' ) {
+			this.props.onKeyPressN();
 		}
 	};
 

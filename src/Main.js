@@ -7,22 +7,14 @@ import {
 	Link,
 	Redirect,
 } from 'react-router-dom';
-import useKeyboardShortcut from 'use-keyboard-shortcut';
 import Container from './objects/Container';
 import Header from './objects/Header';
-import Interface from './objects/Interface';
+import Games from './objects/Games';
+import Practice from './games/Practice';
+import Points from './games/Points';
 import './styles.scss';
 
 const Main = () => {
-	const [ key, setKey ] = useState( 0 );
-	const [ paused, setPaused ] = useState( false );
-	useKeyboardShortcut( [ ' ' ], () => {
-		if ( ! paused ) {
-			setPaused( true );
-		} else {
-			setPaused( false );
-		}
-	} );
 	return (
 		<>
 			<Router>
@@ -31,34 +23,18 @@ const Main = () => {
 						<>
 							<Container>
 								<Header />
+								<Games />
 							</Container>
 						</>
 					</Route>
-					<Route path="/users">
-						<></>
+					<Route exact path="/games/points/">
+						<>
+							<Points />
+						</>
 					</Route>
 					<Route exact path="/">
 						<>
-							<Container>
-								<Header />
-								<Interface
-									onAnswer={ (
-										isCorrect,
-										timeInMilliseconds
-									) => {
-										setKey( key + 1 );
-									} }
-									key={ key }
-									paused={ paused }
-									onSpacebarPress={ () => {
-										if ( false === paused ) {
-											setPaused( true );
-										} else {
-											setPaused( false );
-										}
-									} }
-								/>
-							</Container>
+							<Practice />
 						</>
 					</Route>
 					<Redirect to="/" />
