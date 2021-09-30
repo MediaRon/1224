@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as PowerAnimals from '../../components/PowerAnimals/index';
+import SocialShare from './SocialShare';
 
 const ShareContainer = styled.div`
 	background: rgba( 255, 255, 255, 0.95 );
@@ -56,6 +57,7 @@ const ShareResults = ( props ) => {
 				{ getPowerAnimal( total ) }
 				<h2>Your Score</h2>
 				<h3>{ total } Points!</h3>
+				<SocialShare points={ total } />
 			</>
 		</ShareContainer>
 	);
