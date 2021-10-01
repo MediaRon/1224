@@ -12,6 +12,7 @@ import Header from './objects/Header';
 import Games from './objects/Games';
 import Practice from './games/Practice';
 import Points from './games/Points';
+import Countdown from './games/Countdown';
 import './styles.scss';
 
 const Main = () => {
@@ -32,11 +33,17 @@ const Main = () => {
 							<Points />
 						</>
 					</Route>
+					<Route exact path="/games/countdown/">
+						<>
+							<Countdown />
+						</>
+					</Route>
 					<Route exact path="/">
 						<>
 							<Practice />
 						</>
 					</Route>
+					<Redirect from="/games" to="/new/" />
 					<Redirect to="/" />
 				</Switch>
 			</Router>
