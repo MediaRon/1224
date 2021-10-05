@@ -14,10 +14,8 @@ const SocialPopupLink = styled.a`
 `;
 
 const SocialShare = ( props ) => {
-	const { points } = props;
-	const shareText = encodeURIComponent(
-		`I am a 12:24 guru with ${ points } points. Can you beat my score?`
-	);
+	const { socialText } = props;
+	const shareText = encodeURIComponent( socialText );
 	const url = encodeURIComponent( `https://1224.app` );
 	const facebookAppId = '4438334979587141';
 
@@ -56,7 +54,7 @@ const SocialShare = ( props ) => {
 };
 
 SocialShare.propTypes = {
-	points: PropTypes.number.isRequired,
+	socialText: PropTypes.string.isRequired,
 };
 
 export default SocialShare;

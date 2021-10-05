@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import * as PowerAnimals from '../../components/PowerAnimals/index';
+import * as PowerAnimals from '../PowerAnimals/index';
 import SocialShare from './SocialShare';
 
 const ShareContainer = styled.div`
@@ -57,7 +57,9 @@ const ShareResults = ( props ) => {
 				{ getPowerAnimal( total ) }
 				<h2>Your Score</h2>
 				<h3>{ total } Points!</h3>
-				<SocialShare points={ total } />
+				<SocialShare
+					socialText={ `I am a 12:24 Points guru with ${ total } points. Can you beat my score?` }
+				/>
 			</>
 		</ShareContainer>
 	);

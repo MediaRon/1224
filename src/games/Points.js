@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
-import ShareResults from '../components/ShareResults';
+import ShareResults from '../components/ShareResults/ShareResultsPoints';
 import Container from '../objects/Container';
 import Header from '../objects/Header';
 import Interface from '../objects/Interface';

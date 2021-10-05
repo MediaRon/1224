@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 import styled from 'styled-components';
-import ShareResults from '../components/ShareResults';
+import ShareResultsCountdown from '../components/ShareResults/ShareResultsCountdown';
 import Container from '../objects/Container';
 import Header from '../objects/Header';
 import Interface from '../objects/Interface';
@@ -149,7 +149,7 @@ const Countdown = ( props ) => {
 		return (
 			<Container>
 				<Header showIntro={ false } />
-				<ShareResults total={ correct } />
+				<ShareResultsCountdown total={ correct } streak={ streak } />
 			</Container>
 		);
 	};
