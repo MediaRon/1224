@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import * as PowerAnimals from '../PowerAnimals/index';
+import * as Cats from '../Cats/index';
 import SocialShare from './SocialShare';
 
 const ShareContainer = styled.div`
@@ -18,37 +18,26 @@ const ShareResultsCountdown = ( props ) => {
 	const { total, streak } = props;
 
 	const getPowerAnimal = ( points ) => {
-		if ( 0 === points || 30 > points ) {
-			// 0-9 Sloth.
-			return <PowerAnimals.Sloth />;
+		if ( 0 === points || 5 > points ) {
+			return <Cats.Donut />;
 		}
-		// 10-20 Giraffe.
-		if ( points >= 30 && points <= 50 ) {
-			return <PowerAnimals.Giraffe />;
+		if ( points >= 5 && points <= 10 ) {
+			return <Cats.Coffee />;
 		}
-		// 20-50 Elephant.
-		if ( points >= 50 && points <= 80 ) {
-			return <PowerAnimals.Elephant />;
+		if ( points >= 10 && points <= 20 ) {
+			return <Cats.Burger />;
 		}
-		// 50-70 Fox.
-		if ( points >= 80 && points <= 120 ) {
-			return <PowerAnimals.Fox />;
+		if ( points >= 20 && points <= 40 ) {
+			return <Cats.Cone />;
 		}
-		// 70-90 Lion.
-		if ( points >= 120 && points <= 150 ) {
-			return <PowerAnimals.Lion />;
+		if ( points >= 40 && points <= 60 ) {
+			return <Cats.Cupcake />;
 		}
-		// 90-100 Tiger.
-		if ( points >= 150 && points <= 200 ) {
-			return <PowerAnimals.Tiger />;
+		if ( points >= 60 && points <= 70 ) {
+			return <Cats.Fries />;
 		}
-		// 100-120 Hippo.
-		if ( points >= 200 && points <= 240 ) {
-			return <PowerAnimals.Hippo />;
-		}
-		// > 120 Zebra.
-		if ( points >= 240 ) {
-			return <PowerAnimals.Zebra />;
+		if ( points >= 70 ) {
+			return <Cats.Shake />;
 		}
 	};
 	return (
