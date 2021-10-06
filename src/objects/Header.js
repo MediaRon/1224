@@ -1,5 +1,7 @@
-import Logo from '../components/Logo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const AppHeader = styled.header`
 	padding-top: 2em;
@@ -18,20 +20,32 @@ const AppDescription = styled.p`
 	text-align: center;
 `;
 
-const Header = () => {
+const Header = ( props ) => {
+	const { showIntro } = props;
 	return (
 		<AppHeader>
 			<>
-				<Logo />
-				<AppDescriptionWrapper>
-					<AppDescription>
-						A simple game for converting 12-hour time to 24-hour
-						time.
-					</AppDescription>
-				</AppDescriptionWrapper>
+				<Link to="/">
+					<Logo />
+				</Link>
+				{ showIntro && (
+					<AppDescriptionWrapper>
+						<AppDescription>
+							A simple game for converting 12-hour time to 24-hour
+							time.
+						</AppDescription>
+					</AppDescriptionWrapper>
+				) }
 			</>
 		</AppHeader>
 	);
+};
+
+Header.propTypes = {
+	showIntro: PropTypes.bool,
+};
+Header.defaultProps = {
+	showIntro: false,
 };
 
 export default Header;
