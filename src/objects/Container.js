@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { slide as Menu } from 'react-burger-menu';
 
 const AppContainer = styled.div`
 	width: 100%;
@@ -10,7 +12,17 @@ const AppContainer = styled.div`
 `;
 
 const Container = ( props ) => {
-	return <AppContainer>{ props.children }</AppContainer>;
+	return (
+		<AppContainer>
+			<>
+				<Menu>
+					<Link to="/">Home</Link>
+					<Link to="/new/">New Game</Link>
+				</Menu>
+				{ props.children }
+			</>
+		</AppContainer>
+	);
 };
 
 export default Container;
