@@ -8,8 +8,8 @@ body {
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
-  width: 36px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
   left: 36px;
   top: 36px;
 }
@@ -26,8 +26,8 @@ body {
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
-  height: 24px;
-  width: 24px;
+  height: 48px !important;
+  width: 48px !important;
 }
 
 /*
@@ -53,8 +53,20 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 /* Wrapper for item list */
 .bm-item-list {
-  color: #b8b7ad;
+  color: #FFF;
   padding: 0.8em;
+
+  .bm-item {
+    color: #FFF;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+
+    &:hover {
+      border-bottom: 1px solid #fff;
+      transition: all ease-in-out 0.5s;
+    }
+  }
 }
 
 /* Individual item */

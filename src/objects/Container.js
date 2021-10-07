@@ -23,6 +23,13 @@ const Container = ( props ) => {
 				>
 					<Link to="/">Home</Link>
 					<Link to="/new/">New Game</Link>
+					<a
+						href="https://mediaron.com/contact/"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Contact
+					</a>
 				</Menu>
 				{ props.children }
 			</>
