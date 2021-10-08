@@ -20,8 +20,8 @@ const Container = ( props ) => {
 				<Menu
 					customBurgerIcon={ <HamburgerMenu /> }
 					customCrossIcon={ <CloseMenu /> }
+					disableAutoFocus
 				>
-					<Link to="/">Home</Link>
 					<Link to="/new/">New Game</Link>
 					<a
 						href="https://mediaron.com/contact/"
@@ -29,6 +29,13 @@ const Container = ( props ) => {
 						rel="noreferrer"
 					>
 						Contact
+					</a>
+					<a
+						href="https://github.com/MediaRon/1224"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Source Code
 					</a>
 				</Menu>
 				{ props.children }
