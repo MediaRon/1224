@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { slide as Menu } from 'react-burger-menu';
+import HamburgerMenu from '../components/HamburgerMenu';
+import CloseMenu from '../components/CloseMenu';
 
 const AppContainer = styled.div`
 	width: 100%;
@@ -10,7 +14,34 @@ const AppContainer = styled.div`
 `;
 
 const Container = ( props ) => {
-	return <AppContainer>{ props.children }</AppContainer>;
+	return (
+		<AppContainer>
+			<>
+				<Menu
+					customBurgerIcon={ <HamburgerMenu /> }
+					customCrossIcon={ <CloseMenu /> }
+					disableAutoFocus
+				>
+					<Link to="/new/">New Game</Link>
+					<a
+						href="https://mediaron.com/contact/"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Contact
+					</a>
+					<a
+						href="https://github.com/MediaRon/1224"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Source Code
+					</a>
+				</Menu>
+				{ props.children }
+			</>
+		</AppContainer>
+	);
 };
 
 export default Container;

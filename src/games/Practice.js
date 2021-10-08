@@ -26,7 +26,7 @@ const Practice = ( props ) => {
 	return (
 		<>
 			<Container>
-				<Header showIntro={ true } />
+				<Header showIntro={ false } />
 				<Interface
 					onAnswer={ ( isCorrect, timeInMilliseconds ) => {
 						if ( isCorrect || 0 === timeInMilliseconds ) {

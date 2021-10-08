@@ -34,6 +34,7 @@ const Countdown = ( props ) => {
 	const [ key, setKey ] = useState( 0 );
 	const [ paused, setPaused ] = useState( false );
 	const [ correct, setCorrect ] = useState( 0 );
+	const [ totalStreak, setTotalStreak ] = useState( 0 );
 	const [ streak, setStreak ] = useState( 0 );
 	const [ timeLeft, setTimeLeft ] = useState( 0 );
 	const [ endOfGame, setEndOfGame ] = useState( false );
@@ -100,6 +101,20 @@ const Countdown = ( props ) => {
 		clearInterval( timerInveralKey );
 	};
 
+	/**
+	 * Set current streak.
+	 *
+	 * @param {number} currentStreak
+	 */
+	const addToStreak = ( currentStreak ) => {
+		const newStreak = currentStreak + 1;
+
+		if ( newStreak > totalStreak ) {
+			setTotalStreak( newStreak );
+		}
+		setStreak( newStreak );
+	};
+
 	const gameInterface = () => {
 		return (
 			<>
@@ -110,7 +125,7 @@ const Countdown = ( props ) => {
 							if ( isCorrect || 0 === timeInMilliseconds ) {
 								if ( isCorrect ) {
 									setCorrect( correct + 1 );
-									setStreak( streak + 1 );
+									addToStreak( streak );
 								}
 								if ( 0 === timeInMilliseconds ) {
 									setStreak( 0 );
@@ -149,7 +164,10 @@ const Countdown = ( props ) => {
 		return (
 			<Container>
 				<Header showIntro={ false } />
-				<ShareResultsCountdown total={ correct } streak={ streak } />
+				<ShareResultsCountdown
+					total={ correct }
+					streak={ totalStreak }
+				/>
 			</Container>
 		);
 	};
