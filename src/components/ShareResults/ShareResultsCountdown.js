@@ -45,9 +45,11 @@ const ShareResultsCountdown = ( props ) => {
 			<>
 				{ getPowerAnimal( total ) }
 				<h2>Your Score</h2>
-				<h3>{ total } Correct!</h3>
+				<h3>
+					{ total } Correct! Highest streak: { streak }
+				</h3>
 				<SocialShare
-					socialText={ `I am a 12:24 Countdown guru with ${ total } correct.` }
+					socialText={ `I am a 12:24 Countdown guru with ${ total } correct and a high streak of ${ streak }.` }
 				/>
 			</>
 		</ShareContainer>

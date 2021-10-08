@@ -164,7 +164,10 @@ const Countdown = ( props ) => {
 		return (
 			<Container>
 				<Header showIntro={ false } />
-				<ShareResultsCountdown total={ correct } streak={ streak } />
+				<ShareResultsCountdown
+					total={ correct }
+					streak={ totalStreak }
+				/>
 			</Container>
 		);
 	};
