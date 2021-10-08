@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../components/Logo';
 
 const AppHeader = styled.header`
-	padding-top: 2em;
+	padding-top: 1em;
 `;
 const AppDescriptionWrapper = styled.div`
 	background: rgba( 183, 121, 0, 0.9 );

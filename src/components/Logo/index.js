@@ -6,6 +6,12 @@ const LogoStyles = styled.div`
 	margin: 0 auto;
 	padding-bottom: 1.5em;
 	text-align: center;
+	@media ( max-width: 768px ) {
+		svg {
+			max-width: 50%;
+		}
+		padding-bottom: 0;
+	}
 `;
 
 const Logo = ( props ) => {
