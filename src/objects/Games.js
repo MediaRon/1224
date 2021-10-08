@@ -21,7 +21,7 @@ const Games = ( props ) => {
 				srcHeight={ 211 }
 				path="/games/countdown"
 				name="Countdown"
-				description="Get as many right as possible in 30 seconds."
+				description="Get as many right as possible in 60 seconds."
 			/>
 		</GameContainer>
 	);
