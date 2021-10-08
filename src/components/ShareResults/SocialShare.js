@@ -40,7 +40,7 @@ const SocialShare = ( props ) => {
 					onClick={ ( e ) => {
 						e.preventDefault();
 						window.open(
-							`https://twitter.com/intent/tweet?via=mediaronllc&url=${ url }&text=${ shareText }&hashtags=1224app`,
+							`https://twitter.com/intent/tweet?via=RonaldHuereca&url=${ url }&text=${ shareText }&hashtags=1224app`,
 							'1224 Tweet',
 							'width=575,height=430,toolbar=false,menubar=false,location=false,status=false'
 						);
